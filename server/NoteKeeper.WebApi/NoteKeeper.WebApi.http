@@ -1,0 +1,6 @@
+@NoteKeeper.WebApi_HostAddress = http://localhost:5011
+
+GET {{NoteKeeper.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
