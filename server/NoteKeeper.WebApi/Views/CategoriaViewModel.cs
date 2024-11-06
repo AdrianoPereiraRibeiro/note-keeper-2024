@@ -22,7 +22,7 @@
     {
         public required Guid id { get; set; }
         public  required string Titulo { get; set; }
-        public required List<NotaViewModel> Notas { get; set; }
+        public required List<ListarNotaViewModel> Notas { get; set; }
 
     }
 }

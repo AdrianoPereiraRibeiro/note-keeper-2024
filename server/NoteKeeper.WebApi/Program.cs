@@ -1,10 +1,13 @@
 
 using Microsoft.EntityFrameworkCore;
 using NoteKeeper.Aplicacao.ModuloCategoria;
+using NoteKeeper.Aplicacao.ModuloNota;
 using NoteKeeper.Dominio.Compartilhado;
 using NoteKeeper.Dominio.ModuloCategoria;
+using NoteKeeper.Dominio.ModuloNota;
 using NoteKeeper.Infra.Orm.Compartilhado;
 using NoteKeeper.Infra.Orm.ModuloCategoria;
+using NoteKeeper.Infra.Orm.ModuloNota;
 using NoteKeeper.WebApi.Config.Mapping;
 
 namespace NoteKeeper.WebApi
@@ -13,7 +16,8 @@ namespace NoteKeeper.WebApi
     {
         public static void Main(string[] args)
         {
-            
+
+           
             var builder = WebApplication.CreateBuilder(args);
 
             var connectionString = builder.Configuration.GetConnectionString("SqlServer");
@@ -26,9 +30,15 @@ namespace NoteKeeper.WebApi
             builder.Services.AddScoped<IRepositorioCategoria, RepositorioCategoriaOrm>();
             builder.Services.AddScoped<ServicoCategoria>();
 
+            builder.Services.AddScoped<IRepositorioNota, RepositorioNotaOrm>();
+            builder.Services.AddScoped<ServicoNota>();
+
+            builder.Services.AddScoped<ConfigurarCategoriaMappingAction>();
+
             builder.Services.AddAutoMapper(config =>
             {
                 config.AddProfile<CategoriaProfile>();
+                config.AddProfile<NotaProfile>();
             });
 
             builder.Services.AddControllers();
