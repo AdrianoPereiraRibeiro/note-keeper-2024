@@ -1,34 +1,44 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NoteKeeper.Aplicacao.ModuloCategoria;
 using NoteKeeper.Dominio.ModuloCategoria;
+using NoteKeeper.WebApi.Views;
 
-namespace NoteKeeper.WebApi.Controllers
+[Route("api/[controller]")]
+[ApiController]
+public class CategoriaController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CategoriaController : ControllerBase
+    private readonly ServicoCategoria servicoCategoria;
+    private readonly IMapper mapeador;
+
+    public CategoriaController(ServicoCategoria servicoCategoria, IMapper mapeador)
     {
-        private readonly ServicoCategoria servicoCategoria;
+        this.servicoCategoria = servicoCategoria;
+        this.mapeador = mapeador;
+    }
 
-        public CategoriaController(ServicoCategoria servicoCategoria)
-        {
-            this.servicoCategoria = servicoCategoria;
-        }
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        var resultado = await servicoCategoria.SelecionarTodosAsync();
 
+        if (resultado.IsFailed)
+            return StatusCode(500);
 
-        [HttpGet(Name = "GetCategtoria")]
-        public async Task<IActionResult> Get()
-        {
-            var resultado = await servicoCategoria.SelecionarTodosAsync();
+        return Ok(resultado.Value);
+    }
 
-            if (resultado.IsFailed)
-            {
-                return StatusCode(500);
-            }
+    [HttpPost]
+    public async Task<IActionResult> Post(InserirCategoriaViewModel categoriaVm)
+    {
+        var categoria = mapeador.Map<Categoria>(categoriaVm);
 
-            return Ok(resultado.Value);
+        var resultado = await servicoCategoria.InserirAsync(categoria);
 
-        }
+        if (resultado.IsFailed)
+            return BadRequest(resultado.Errors);
+
+        return Ok(categoriaVm);
     }
 }
