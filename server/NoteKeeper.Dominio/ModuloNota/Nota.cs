@@ -22,20 +22,5 @@ namespace NoteKeeper.Dominio.ModuloNota
             CategoriaId = categoriaId;
         }
 
-        public override List<string> Validar()
-        {
-            List<string> erros = [];
-
-            if (string.IsNullOrEmpty(Titulo))
-                erros.Add("O título é obrigatório");
-
-            if (string.IsNullOrEmpty(Conteudo))
-                erros.Add("O conteúdo é obrigatório");
-
-            if (CategoriaId == Guid.Empty)
-                erros.Add("A categoria é obrigatória");
-
-            return erros;
-        }
     }
 }

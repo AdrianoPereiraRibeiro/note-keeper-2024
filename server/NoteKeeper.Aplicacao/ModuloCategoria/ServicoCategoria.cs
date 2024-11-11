@@ -1,4 +1,5 @@
 ﻿using FluentResults;
+using FluentValidation.Results;
 using NoteKeeper.Dominio.ModuloCategoria;
 
 namespace NoteKeeper.Aplicacao.ModuloCategoria;
@@ -14,10 +15,16 @@ public class ServicoCategoria
 
     public async Task<Result<Categoria>> InserirAsync(Categoria categoria)
     {
-        var resultadoValidacao = categoria.Validar();
+        var validador = new ValidadorCategoria();
+   
+        
+        ValidationResult resultadoValidacao = await validador.ValidateAsync(categoria);
 
-        if (resultadoValidacao.Count > 0)
-            return Result.Fail(resultadoValidacao);
+        if (!resultadoValidacao.IsValid)
+        {
+            var erros = resultadoValidacao.Errors.Select(failure => failure.ErrorMessage).ToList();
+            return Result.Fail(erros); 
+        }
 
         await _repositorioCategoria.InserirAsync(categoria);
 
@@ -26,10 +33,16 @@ public class ServicoCategoria
 
     public async Task<Result<Categoria>> EditarAsync(Categoria categoria)
     {
-        var resultadoValidacao = categoria.Validar();
+        var validador = new ValidadorCategoria();
 
-        if (resultadoValidacao.Count > 0)
-            return Result.Fail(resultadoValidacao);
+
+        ValidationResult resultadoValidacao = await validador.ValidateAsync(categoria);
+
+        if (!resultadoValidacao.IsValid)
+        {
+            var erros = resultadoValidacao.Errors.Select(failure => failure.ErrorMessage).ToList();
+            return Result.Fail(erros);
+        }
 
         _repositorioCategoria.Editar(categoria);
 

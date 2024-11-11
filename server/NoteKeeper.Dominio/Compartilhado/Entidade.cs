@@ -9,6 +9,5 @@
             Id = Guid.NewGuid();
         }
 
-        public abstract List<string> Validar();
     }
 }

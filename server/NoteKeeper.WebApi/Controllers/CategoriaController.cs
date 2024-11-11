@@ -64,7 +64,7 @@ public class CategoriaController : ControllerBase
         var resultado = await servicoCategoria.InserirAsync(categoria);
 
         if (resultado.IsFailed)
-            return BadRequest(resultado.Errors);
+            return BadRequest(resultado.Errors.Select(err=> err.Message));
 
         return Ok(categoriaVm);
     }
@@ -84,7 +84,7 @@ public class CategoriaController : ControllerBase
         var edicaoResult = await servicoCategoria.EditarAsync(categoriaEditada);
         if (edicaoResult.IsFailed)
         {
-            return BadRequest(edicaoResult.Errors);
+            return BadRequest(edicaoResult.Errors.Select(err => err.Message));
         }
 
         return Ok(edicaoResult.Value);
