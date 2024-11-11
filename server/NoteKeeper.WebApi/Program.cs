@@ -9,6 +9,7 @@ using NoteKeeper.Infra.Orm.Compartilhado;
 using NoteKeeper.Infra.Orm.ModuloCategoria;
 using NoteKeeper.Infra.Orm.ModuloNota;
 using NoteKeeper.WebApi.Config.Mapping;
+using NoteKeeper.WebApi.Filters;
 
 namespace NoteKeeper.WebApi
 {
@@ -41,7 +42,10 @@ namespace NoteKeeper.WebApi
                 config.AddProfile<NotaProfile>();
             });
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers(options =>
+            {
+                options.Filters.Add<ResponseWrapperFilter>();
+            });
 
             builder.Services.AddEndpointsApiExplorer();
 
