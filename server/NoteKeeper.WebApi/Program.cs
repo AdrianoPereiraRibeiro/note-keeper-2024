@@ -52,6 +52,9 @@ namespace NoteKeeper.WebApi
 
             builder.Services.AddSwaggerGen();
 
+            builder.Services.ConfigureSerilog(builder.Logging);
+
+            //
             var app = builder.Build();
 
             app.UseGlobalExceptionHandler();
@@ -62,6 +65,7 @@ namespace NoteKeeper.WebApi
                 app.UseSwaggerUI();
             }
 
+            //
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using NoteKeeper.Aplicacao.ModuloCategoria;
 using NoteKeeper.Dominio.ModuloCategoria;
 using NoteKeeper.WebApi.Views;
+using Serilog;
 
 [Route("api/categorias")]
 [ApiController]
@@ -11,6 +12,7 @@ public class CategoriaController : ControllerBase
 {
     private readonly ServicoCategoria servicoCategoria;
     private readonly IMapper mapeador;
+ 
 
     public CategoriaController(ServicoCategoria servicoCategoria, IMapper mapeador)
     {
@@ -27,6 +29,8 @@ public class CategoriaController : ControllerBase
             return StatusCode(500);
 
         var viewModel = mapeador.Map<ListarCategoriaViewModel[]>(resultado.Value);
+
+        Log.Information("Foram selecionados {QuantidadeRegistros}",viewModel.Count());
 
         return Ok(resultado.Value);
     }
