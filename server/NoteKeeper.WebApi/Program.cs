@@ -11,6 +11,7 @@ using NoteKeeper.Infra.Orm.ModuloNota;
 using NoteKeeper.WebApi.Config;
 using NoteKeeper.WebApi.Config.Mapping;
 using NoteKeeper.WebApi.Filters;
+using Serilog;
 
 namespace NoteKeeper.WebApi
 {
@@ -72,7 +73,17 @@ namespace NoteKeeper.WebApi
 
             app.MapControllers();
 
-            app.Run();
+            try
+            {
+                app.Run();
+            }
+            catch (Exception ex)
+            {
+               Log.Fatal("Ocorreu um erro que fechou a aplicação.", ex);
+
+               return;
+            }
+           
         }
     }
 }
