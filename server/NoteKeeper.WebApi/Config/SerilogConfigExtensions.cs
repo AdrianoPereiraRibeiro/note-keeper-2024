@@ -15,7 +15,7 @@ namespace NoteKeeper.WebApi.Config
                 .WriteTo.NewRelicLogs(
                     endpointUrl: "https://log-api.newrelic.com/log/v1",
                     applicationName: "note-keeper-api",
-                    licenseKey: "24cce4819e8f5d34f6604dde26ee3456FFFFNRAL"
+                    licenseKey: ""
 
                     )
                 .CreateLogger();
